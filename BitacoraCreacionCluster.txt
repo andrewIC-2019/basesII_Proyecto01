@@ -1,0 +1,192 @@
+//Proyecto #1
+
+
+-------------------------------------------- RED Y VOLUMENES DE CFG -----------------------------------------------------------
+
+docker network create --driver bridge --subnet 10.0.1.32/28 proyecto_varCovidnet 
+
+//se crean volumenes para los servers de configuracion
+docker volume create vol_cfg01  //Manuel
+docker volume create vol_cfg02	//Fiorella
+docker volume create vol_cfg03	//Juan
+
+
+
+------------------------------------ SERVIDORES DE CONFIGURACION --------------------------------------------------
+// iniciar un servidor de configuración en modo configserver indicando la red y el nombre del replica set
+
+
+docker run -d --net proyecto_varCovidnet -p 27018:27017 -v vol_cfg01:/data/configdb --ip 10.0.1.34 --name cfg01 mongo mongod --port 27017 --configsvr --replSet "repcfgcovid3" --dbpath /data/configdb 	//Manuel
+docker run -d --net proyecto_varCovidnet -p 27019:27017 -v vol_cfg02:/data/configdb --ip 10.0.1.35 --name cfg02 mongo mongod --port 27017 --configsvr --replSet "repcfgcovid3" --dbpath /data/configdb	//Fiorella
+docker run -d --net proyecto_varCovidnet -p 27020:27017 -v vol_cfg03:/data/configdb --ip 10.0.1.36 --name cfg03 mongo mongod --port 27017 --configsvr --replSet "repcfgcovid3" --dbpath /data/configdb	//Juan
+// ingresamos a un servidor de configuracion, y solo a uno
+docker exec -it cfg01 bash
+
+// hacerle init al servicio de replica set para que haya replicacion entre los servidores de configuracion
+rs.initiate(
+  {
+    _id: "repcfgcovid3",
+    configsvr: true,
+    members: [
+      { _id : 0, host : "25.68.23.111:27018" },
+      { _id : 1, host : "25.65.150.52:27019" },
+      { _id : 2, host : "25.59.169.141:27020" }
+    ]
+  }
+);
+
+// ejecutar 
+rs.status() // me entrega estadisticas del estado de la replicacion
+
+---------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------ SHARDS -----------------------------------------------------------
+
+// inicializo shards y asignarlos a una replica, replica que aun no está activa pero se declara cual es
+
+docker volume create vol_delta01  //Andrés
+docker volume create vol_delta02  //Juan
+docker volume create vol_gamma01  //Manuel
+docker volume create vol_gamma02  //Andrés
+docker volume create vol_alpha01  //Fiorella
+docker volume create vol_alpha02  //Juan
+
+docker run -d --net proyecto_varCovidnet -p 27021:27017 --ip 10.0.1.37 -v vol_delta01:/data/db --name delta01 mongo mongod --port 27017 --shardsvr --replSet "repdelta3" --dbpath /data/db	//Andrés
+docker run -d --net proyecto_varCovidnet -p 27022:27017 --ip 10.0.1.38 -v vol_delta02:/data/db --name delta02 mongo mongod --port 27017 --shardsvr --replSet "repdelta3" --dbpath /data/db	//Juan
+
+docker run -d --net proyecto_varCovidnet -p 27024:27017 --ip 10.0.1.40 -v vol_gamma01:/data/db --name gamma01 mongo mongod --port 27017 --shardsvr --replSet "repgamma3" --dbpath /data/db	//Manuel
+docker run -d --net proyecto_varCovidnet -p 27025:27017 --ip 10.0.1.41 -v vol_gamma02:/data/db --name gamma02 mongo mongod --port 27017 --shardsvr --replSet "repgamma3" --dbpath /data/db	//Andrés
+
+docker run -d --net proyecto_varCovidnet -p 27027:27017 --ip 10.0.1.43 -v vol_alpha01:/data/db --name alpha01 mongo mongod --port 27017 --shardsvr --replSet "repalpha3" --dbpath /data/db	//Fiorella
+docker run -d --net proyecto_varCovidnet -p 27028:27017 --ip 10.0.1.44 -v vol_alpha02:/data/db --name alpha02 mongo mongod --port 27017 --shardsvr --replSet "repalpha3" --dbpath /data/db	//Juan
+
+// conectarse a uno de los servidores e inicializar la replica entre ellos
+// me conecto a un shardserver que sea miembro de una de las replicaas para inicializar la replica
+
+docker exec -it delta01 mongo //Andrés
+
+rs.initiate(
+  {
+    _id : "repdelta3",
+    members: [
+      { _id : 0, host : "25.69.53.205:27021" },
+      { _id : 1, host : "25.59.169.141:27022" }
+    ]
+  }
+);
+
+// repito el mismo proceso con la otra replica, me conecto a uno de los members
+
+docker exec -it gamma01 mongo	//Manuel
+
+rs.initiate(
+  {
+    _id : "repgamma3",
+    members: [
+      { _id : 0, host : "25.68.23.111:27024" },
+      { _id : 1, host : "25.69.53.205:27025" }
+    ]
+  }
+);
+
+// repito el mismo proceso con la otra replica, me conecto a uno de los members
+
+docker exec -it alpha01 mongo	//Fiorella
+
+rs.initiate(
+  {
+    _id : "repalpha3",
+    members: [
+      { _id : 0, host : "25.65.150.52:27027" },
+      { _id : 1, host : "25.59.169.141:27028" }
+    ]
+  }
+);
+
+
+// para el sistema de voting es mejor agregar un arbitro
+docker run -d --net proyecto_varCovidnet -p 27023:27017 --ip 10.0.1.39 --name delta_arb mongo mongod --port 27017 --replSet repdelta3	//Andrés
+docker run -d --net proyecto_varCovidnet -p 27026:27017 --ip 10.0.1.42 --name gamma_arb mongo mongod --port 27017 --replSet repgamma3	//Manuel
+docker run -d --net proyecto_varCovidnet -p 27029:27017 --ip 10.0.1.45 --name alpha_arb mongo mongod --port 27017 --replSet repalpha3	//Fiorella
+
+
+// me conecto a a algun servidor que este en la replica y le agrego su arbitro
+docker exec -it delta01 mongo	//Andrés
+rs.addArb("25.69.53.205:27023")
+rs.status();
+
+agrego el arbitro la otra replica
+docker exec -it gamma01 mongo		//Manuel
+rs.addArb("25.68.23.111:27026")
+
+agrego el arbitro la otra replica
+docker exec -it alpha01 mongo		//Fiorella
+rs.addArb("25.65.150.52:27029")
+
+
+// vamos a inicializar el router indicando cuales son los servidores de configuracion
+docker run -d --net proyecto_varCovidnet -p 27030:27017 --ip 10.0.1.46 --name router01 mongo mongos --port 27017 --configdb repcfgcovid3/25.68.23.111:27018,25.65.150.52:27019,25.59.169.141:27020 --bind_ip_all	//Juan
+docker run -d --net proyecto_varCovidnet -p 27031:27017 --ip 10.0.1.36 --name router02 mongo mongos --port 27017 --configdb repcfgcovid3/25.68.23.111:27018,25.65.150.52:27019,25.59.169.141:27020 --bind_ip_all	//Fiorella
+
+
+// conectamos al router
+docker exec -it router01 mongo
+
+sh.addShard( "repdelta3/25.69.53.205:27021");  hacemos shards con un server en cada replica, no hace faltan los otros porque ya estan en replica entre si
+sh.addShard( "repgamma3/25.68.23.111:27024");  hacemos shards con un server en cada replica, no hace faltan los otros porque ya estan en replica entre si
+sh.addShard( "repalpha3/25.65.150.52:27027");  hacemos shards con un server en cada replica, no hace faltan los otros porque ya estan en replica entre si
+
+
+sh.status();
+ya tenemos las replicas listas, el router ya se le dijo cuales son los shardservers
+///////////////////////////////////////////////////////////
+////// ya queda todo listo a nivel de infraestructura /////
+///////////////////////////////////////////////////////////
+
+
+
+
+
+
+procedemos a configurar la distribucion de datos del shard
+
+conectarnos al router y probamos
+
+sh.addShardTag("repdelta3", "Delta");
+sh.addShardTag("repgamma3", "Gamma");
+sh.addShardTag("repalpha3", "Alpha");
+
+
+
+sh.addTagRange( "pandemiadb.variantes",
+                { variant: "Delta"},
+                { variant: "Delta999"},
+                "Delta"
+              );
+
+sh.addTagRange( "pandemiadb.variantes",
+                { variant: "Gamma"},
+                { variant: "Gamma999"},
+                "Gamma"
+              );
+sh.addTagRange( "pandemiadb.variantes",
+                { variant: "Alpha"},
+                { variant: "Alpha999"},
+                "Alpha"
+              );
+
+
+// Indico cual va a ser la base de datos que va a soportar sharding
+sh.enableSharding("pandemiadb");
+
+// luego el collection y el campo del collection que va servir como shardkey
+sh.shardCollection("pandemiadb.variantes", { variant : 1 } );
+
+sh.status();
+
+
+
+// con eso terminado ya puedo probar el sharding y la replica que funcionan correctamente
+
+
+//rs.remove("x.x.x.x:27024")
