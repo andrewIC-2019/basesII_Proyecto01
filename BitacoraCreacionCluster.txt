@@ -45,20 +45,20 @@ rs.status() // me entrega estadisticas del estado de la replicacion
 // inicializo shards y asignarlos a una replica, replica que aun no está activa pero se declara cual es
 
 docker volume create vol_delta01  //Andrés
-docker volume create vol_delta02  //Juan
+docker volume create vol_delta02  //Manuel
 docker volume create vol_gamma01  //Manuel
 docker volume create vol_gamma02  //Andrés
 docker volume create vol_alpha01  //Fiorella
-docker volume create vol_alpha02  //Juan
+docker volume create vol_alpha02  //Manuel
 
 docker run -d --net proyecto_varCovidnet -p 27021:27017 --ip 10.0.1.37 -v vol_delta01:/data/db --name delta01 mongo mongod --port 27017 --shardsvr --replSet "repdelta3" --dbpath /data/db	//Andrés
-docker run -d --net proyecto_varCovidnet -p 27022:27017 --ip 10.0.1.38 -v vol_delta02:/data/db --name delta02 mongo mongod --port 27017 --shardsvr --replSet "repdelta3" --dbpath /data/db	//Juan
+docker run -d --net proyecto_varCovidnet -p 27022:27017 --ip 10.0.1.38 -v vol_delta02:/data/db --name delta02 mongo mongod --port 27017 --shardsvr --replSet "repdelta3" --dbpath /data/db	//Manuel
 
 docker run -d --net proyecto_varCovidnet -p 27024:27017 --ip 10.0.1.40 -v vol_gamma01:/data/db --name gamma01 mongo mongod --port 27017 --shardsvr --replSet "repgamma3" --dbpath /data/db	//Manuel
 docker run -d --net proyecto_varCovidnet -p 27025:27017 --ip 10.0.1.41 -v vol_gamma02:/data/db --name gamma02 mongo mongod --port 27017 --shardsvr --replSet "repgamma3" --dbpath /data/db	//Andrés
 
 docker run -d --net proyecto_varCovidnet -p 27027:27017 --ip 10.0.1.43 -v vol_alpha01:/data/db --name alpha01 mongo mongod --port 27017 --shardsvr --replSet "repalpha3" --dbpath /data/db	//Fiorella
-docker run -d --net proyecto_varCovidnet -p 27028:27017 --ip 10.0.1.44 -v vol_alpha02:/data/db --name alpha02 mongo mongod --port 27017 --shardsvr --replSet "repalpha3" --dbpath /data/db	//Juan
+docker run -d --net proyecto_varCovidnet -p 27028:27017 --ip 10.0.1.44 -v vol_alpha02:/data/db --name alpha02 mongo mongod --port 27017 --shardsvr --replSet "repalpha3" --dbpath /data/db	//Manuel
 
 // conectarse a uno de los servidores e inicializar la replica entre ellos
 // me conecto a un shardserver que sea miembro de una de las replicaas para inicializar la replica
@@ -70,7 +70,7 @@ rs.initiate(
     _id : "repdelta3",
     members: [
       { _id : 0, host : "25.69.53.205:27021" },
-      { _id : 1, host : "25.59.169.141:27022" }
+      { _id : 1, host : "25.68.23.111:27024" }
     ]
   }
 );
@@ -98,7 +98,7 @@ rs.initiate(
     _id : "repalpha3",
     members: [
       { _id : 0, host : "25.65.150.52:27027" },
-      { _id : 1, host : "25.59.169.141:27028" }
+      { _id : 1, host : "25.68.23.111:27024" }
     ]
   }
 );
