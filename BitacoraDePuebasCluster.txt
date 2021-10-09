@@ -1,0 +1,113 @@
+//PROBANDO QUE EL CLUSTER FUNCIONA
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+//PRUEBAS DENTRO DE LOS ROUTERS
+//Ingresamos a uno de los routers
+docker exec -it router02 bash mongo
+
+//seleccionamos la db
+use pandemiadb;
+
+//1.Probamos que con todos los shards activos se pueden ver todos los datos
+
+//db.variantes.find().pretty();     
+db.variantes.find().count();
+
+---------------------------------------------------------------------------------------------------------------
+//EN LOS SHARDS
+//2.Se comprueba que se realizo la correcta distribución
+
+rs.secondaryOk(); //habilita queries en caso de que sea secundario
+//DELTA
+	docker exec -it delta01 bash mongo
+	use pandemiadb;
+
+	db.variantes.find().pretty();     
+	db.variantes.find().count();
+
+	//Se entra al otro shard de la replica y se prueba que tiene los mismos datos
+	docker exec -it delta02 bash mongo
+	use pandemiadb;
+
+	db.variantes.find().pretty();     
+	db.variantes.find().count();
+
+//ALPHA
+	docker exec -it alpha01 bash mongo
+	use pandemiadb;
+
+	db.variantes.find().pretty();     
+	db.variantes.find().count();
+
+	//Se entra al otro shard de la replica y se prueba que tiene los mismos datos
+	docker exec -it alpha02 bash mongo
+	use pandemiadb;
+
+	db.variantes.find().pretty();     
+	db.variantes.find().count();
+
+
+//GAMMA
+	docker exec -it gamma01 bash mongo
+	use pandemiadb;
+
+	db.variantes.find().pretty();     
+	db.variantes.find().count();
+
+	//Se entra al otro shard de la replica y se prueba que tiene los mismos datos
+	docker exec -it gamma02 bash mongo
+	use pandemiadb;
+
+	db.variantes.find().pretty();     
+	db.variantes.find().count();
+
+---------------------------------------------------------------------------------------------------------------
+
+//3. Apaga un servidor de datos de una de las replicas
+
+docker stop alpha01
+
+---------------------------------------------------------------------------------------------------------------
+//4. Ingresa al router y verifica que puede consultar todos los datos
+
+docker exec -it router02 mongo
+use pandemiadb;
+db.variantes.find().pretty();     
+db.variantes.find().count();
+
+---------------------------------------------------------------------------------------------------------------
+//5. Apaga otro servidor de datos de la misma replica del paso 3
+
+docker stop alpha02
+
+---------------------------------------------------------------------------------------------------------------
+//6. Ingresa al router y verifica que ya no se puede consultar los datos
+
+docker exec -it router02 mongo
+use pandemiadb;
+db.variantes.find().pretty();   //despues de unos segundos debe tirar error    
+db.variantes.find().count();
+
+---------------------------------------------------------------------------------------------------------------
+//7. Enciende cualquier servidor de la replica seleccionada en el paso 3
+
+docker start alpha02
+
+---------------------------------------------------------------------------------------------------------------
+//8. Ingresa al router y verifica que ya resuelve la consulta
+
+docker exec -it router02 mongo
+use pandemiadb;
+db.variantes.find().pretty();   //despues de unos segundos deben aparecer los datos nuevamente  
+db.variantes.find().count();
+
+//**LOS PASOS DEL 3 AL 8, SE PUEDEN APLICAR CON LOS DEMÁS SHARDS**//
+---------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
