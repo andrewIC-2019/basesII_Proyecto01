@@ -1,0 +1,407 @@
+Bitacora de pruebas JMeter
+
+================================SQL SERVER================================
+
+///////Todos los registros (37375)///////
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:14:50
+
+	  Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      321017ms			    20472ms			20701ms
+Hilo 2:      329145ms			    17480ms			17849ms
+
+Ciclo2
+Hilo 1:      285239ms			    0ms			        589ms
+Hilo 2:      287825ms			    0ms			        530ms
+
+Ciclo3
+Hilo 1:      283529ms			    0ms				1695ms
+Hilo 2:      269997ms			    0ms				581ms
+
+Intento 02
+Duracion de la prueba	00:16:17
+
+	  Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      320568ms			    9752ms			9958ms
+Hilo 2:      370604ms			    6766ms			7740ms
+
+Ciclo2
+Hilo 1:      306406ms			    0ms			        366ms
+Hilo 2:      319791ms			    0ms			        1670ms
+
+Ciclo3
+Hilo 1:      297989ms			    0ms				1160ms
+Hilo 2:      283574ms			    0ms				741ms
+
+
+
+///////3000 Registros////////
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:02:08
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      76737ms			    53933ms			55225ms
+Hilo 2:      77236ms			    50947ms			52056ms
+
+Ciclo2
+Hilo 1:      13371ms			    0ms			        433ms
+Hilo 2:      31329ms			    0ms			        3283ms
+
+Ciclo3
+Hilo 1:      24824ms			    0ms				662ms
+Hilo 2:      16502ms			    0ms				1087ms
+
+
+Intento 02
+Duracion de la prueba	00:01:24
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      28507ms			    1389ms			1631ms
+Hilo 2:      33092ms			    4377ms			4633ms
+
+Ciclo2
+Hilo 1:      24091ms			    0ms			        232ms
+Hilo 2:      23838ms			    0ms			        2260ms
+
+Ciclo3
+Hilo 1:      26635ms			    0ms				1563ms
+Hilo 2:      26808ms			    0ms				1101ms
+
+
+
+================================MONGO MONOLITICO================================
+
+///////Todos los registros (37375)///////
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:02:26
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      44278ms			    0ms				0ms
+Hilo 2:      51865ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      48749ms			    0ms			        0ms
+Hilo 2:      51153ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      46215ms			    0ms				0ms
+Hilo 2:      40360ms			    0ms				0ms
+
+Intento 02
+Duracion de la prueba	00:02:18
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      42333ms			    0ms				0ms
+Hilo 2:      48100ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      43928ms			    0ms			        0ms
+Hilo 2:      47816ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      48453ms			    0ms				0ms
+Hilo 2:      39642ms			    0ms				0ms
+
+
+///////3000 Registros////////
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:00:11
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      2099ms			    0ms				0ms
+Hilo 2:      2502ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      2891ms			    0ms			        0ms
+Hilo 2:      2917ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      5615ms			    0ms				0ms
+Hilo 2:      2524ms			    0ms				0ms
+
+
+Intento 02
+Duracion de la prueba	00:00:12
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      2210ms			    0ms				0ms
+Hilo 2:      2343ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      3397ms			    0ms			        0ms
+Hilo 2:      4752ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      3137ms			    0ms				0ms
+Hilo 2:      2903ms			    0ms				0ms
+
+
+
+================================MONGO CLUSTER 100%================================
+
+///////Todos los registros (37375)///////
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01   
+
+Duracion de la prueba	00:05:14
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      97136ms			    0ms				0ms
+Hilo 2:      100418ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      106632ms			    0ms			        0ms
+Hilo 2:      109123ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      88419ms			    0ms				0ms
+Hilo 2:      105138ms			    0ms				0ms
+
+
+///////3000 Registros////////
+
+  ******* 3 shards *******
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:00:16
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      3353ms			    0ms				0ms
+Hilo 2:      4632ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      6742ms			    0ms			        0ms
+Hilo 2:      4060ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      4054ms			    0ms				0ms
+Hilo 2:      5102ms			    0ms				0ms
+
+Intento 02
+Duracion de la prueba	00:00:35
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      8456ms			    0ms				0ms
+Hilo 2:      8734ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      10751ms			    0ms			        0ms
+Hilo 2:      10641ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      9673ms			    0ms				0ms
+Hilo 2:      13098ms			    0ms				0ms
+
+
+  ******* 2 shards *******
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:00:17
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      4496ms			    0ms				0ms
+Hilo 2:      4138ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      4380ms			    0ms			        0ms
+Hilo 2:      8160ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      4546ms			    0ms				0ms
+Hilo 2:      4880ms			    0ms				0ms
+
+Intento 02
+Duracion de la prueba	00:00:23
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      3989ms			    0ms				0ms
+Hilo 2:      9861ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      9762ms			    0ms			        0ms
+Hilo 2:      4812ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      8989ms			    0ms				0ms
+Hilo 2:      6112ms			    0ms				0ms
+
+
+ ******* 1 shards *******
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:00:18
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      7466ms			    0ms				0ms
+Hilo 2:      7805ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      3344ms			    0ms			        0ms
+Hilo 2:      3615ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      5706ms			    0ms			        0ms
+Hilo 2:      3453ms			    0ms			        0ms
+
+Intento 02
+Duracion de la prueba	00:00:17
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      2816ms			    0ms				0ms
+Hilo 2:      5015ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      5356ms			    0ms			        0ms
+Hilo 2:      5564ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      5840ms			    0ms			        0ms
+Hilo 2:      2916ms			    0ms			        0ms
+
+================================MONGO CLUSTER 50%================================
+
+///////Todos los registros (37375)///////
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:05:14
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      95310ms			    0ms				0ms
+Hilo 2:      93287ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      88865ms			    0ms			        0ms
+Hilo 2:      101905ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      112316ms			    0ms				0ms
+Hilo 2:      116166ms			    0ms				0ms
+
+
+///////3000 Registros////////
+
+  ******* 3 shards *******
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:00:33
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      9151ms			    0ms				0ms
+Hilo 2:      16767ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      7539ms			    0ms			        0ms
+Hilo 2:      7603ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      8233ms			    0ms				0ms
+Hilo 2:      13703ms			    0ms				0ms
+
+
+  ******* 2 shards *******
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:00:22
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      4761ms			    0ms				0ms
+Hilo 2:      8108ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      6849ms			    0ms			        0ms
+Hilo 2:      5891ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      8849ms			    0ms				0ms
+Hilo 2:      5698ms			    0ms				0ms
+
+
+ ******* 1 shards *******
+
+Número de hilos: 2
+Periodo de subida: 6
+Ciclos: 3
+
+Intento 01
+Duracion de la prueba	00:00:17
+
+	Tiempos de muestra		 Connect Time		       Latencia	
+Ciclo1
+Hilo 1:      3194ms			    0ms				0ms
+Hilo 2:      4615ms			    0ms				0ms
+
+Ciclo2
+Hilo 1:      6894ms			    0ms			        0ms
+Hilo 2:      4792ms			    0ms			        0ms
+
+Ciclo3
+Hilo 1:      5504ms			    0ms			        0ms
+Hilo 2:      5175ms			    0ms			        0ms
+
+
