@@ -1,0 +1,127 @@
+==================================
+||   Queries a las db - JMeter	||
+==================================
+
+Sql 37375
+----------
+SELECT perc_sequences, [@version], num_sequences, [@timestamp], location, num_sequences_total, date, variant FROM dbo.variantes1;
+
+Sql 3000
+----------
+SELECT TOP 3000 perc_sequences, [@version], num_sequences, [@timestamp], location, num_sequences_total, date, variant FROM dbo.variantes1;
+
+=================================================================================================================================================
+
+Monolitico MongoConnect
+-----------------------
+
+//imports de mongodb + java
+import com.mongodb.*
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoClient;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import java.util.Arrays;
+
+try {
+//Extrae los User Defined Variables del TestPlan, para poder conocer mongodb a donde conectarse
+ MongoClientSettings settings = MongoClientSettings.builder()
+  .applyToClusterSettings {builder -> 
+   builder.hosts(Arrays.asList(new ServerAddress(vars.get("monoliticoHost"),vars.get("monoliticoPort").toInteger())))}
+  .build();
+ 
+ MongoClient mongoClient = MongoClients.create(settings);						//Crea el cliente para la conexion de mongodb
+ 
+ MongoDatabase database = mongoClient.getDatabase(vars.get("databaseName"));				//indica la database
+ MongoCollection<Document> collection = database.getCollection(vars.get("collectionName"));		//indica el collection
+ 
+ vars.putObject("collection", collection);								//carga la coleccion sobre la cual trabjar
+ 
+ return "Connected to " + vars.get("collectionName");
+}
+catch (Exception e) {
+ SampleResult.setSuccessful(false);
+ SampleResult.setResponseCode("500");
+ SampleResult.setResponseMessage("Exception: " + e);
+}
+
+Cluster MongoConnect
+--------------------
+
+//imports de mongodb + java
+import com.mongodb.*
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoClient;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+import java.util.Arrays;
+
+try {
+//Extrae los User Defined Variables del TestPlan, para poder conocer mongodb a donde conectarse
+ MongoClientSettings settings = MongoClientSettings.builder()
+  .applyToClusterSettings {builder -> 
+   builder.hosts(Arrays.asList(new ServerAddress(vars.get("mongoHost"),vars.get("mongoPort").toInteger())))}
+  .build();
+ 
+ MongoClient mongoClient = MongoClients.create(settings);					//Crea el cliente para la conexion de mongodb
+ 
+ MongoDatabase database = mongoClient.getDatabase(vars.get("databaseName"));			//indica la database
+ MongoCollection<Document> collection = database.getCollection(vars.get("collectionName"));	//indica el collection
+ 
+ vars.putObject("collection", collection);							//carga la coleccion sobre la cual trabjar
+ 
+ return "Connected to " + vars.get("collectionName");
+}
+catch (Exception e) {
+ SampleResult.setSuccessful(false);
+ SampleResult.setResponseCode("500");
+ SampleResult.setResponseMessage("Exception: " + e);
+}
+
+=================================================================================================================================================
+
+Estructura General del MongoQuery
+---------------------------------
+
+//imports de mongodb + java
+import com.mongodb.Block;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCursor;
+
+//imports del formato bson
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+
+try {
+ MongoCollection<Document> collection = vars.getObject("collection");	
+
+return collection.find().toList();	//IMPORTANTE: Es que el realiza el filtraje*
+
+}
+catch (Exception e) {
+ SampleResult.setSuccessful(false);
+ SampleResult.setResponseCode("500");
+ SampleResult.setResponseMessage("Exception: " + e);
+}
+
+-- *Filtrajes* --
+
+Todos: 	   return collection.find().toList();
+3000:  	   return collection.find().limit(3000).toList();
+3 Shards:  return collection.find().limit(3000).toList();
+2 Shards:  return collection.find(or(eq("variant","Delta"),eq("variant","Alpha"))).limit(3000).toList();
+	   (Requiere los imports para eq y or)
+1 Shard:   return collection.find(new Document("variant", "Delta")).limit(3000).toList();
+
