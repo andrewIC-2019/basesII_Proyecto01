@@ -1,0 +1,16 @@
+Conclusiones Finales
+
+Luego de varias pruebas y corriendo solicitudes de datos a los tres diferentes ambientes en condiciones muy similares (Monolítico de mongo, Cluster de mongo, SQL SERVER) se llegaron a las siguentes conclusiones:
+
+* La base de datos en SQL Server fue mucho más lenta que cualquier prueba que se le hizo a mongo. 
+En el caso de los 37375 registros SQL Server duró casi un 300% más que el cluster en mongo al 100%.
+
+* La búsqueda dentro del cluster de mongo se efectúa de manera más rápida entre menos Shards se tengan que accesar.
+
+* La base de datos monolítica en mongo fue la más rápida de todas, aun por encima del cluster. 
+Dando un resultado similar, un poco inferior, a buscar en el cluster en un solo Shard.
+
+* La diferencia entre las replicas del cluster funcionando a un 100% y a un 50% es casi nula.
+
+
+PD: Las pruebas se hicieron en JMeter garantizando la mayor similitud para comprara los diferentes ambientes de una manera justa. Usando portfowarding por ejemplo.
