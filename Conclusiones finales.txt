@@ -14,3 +14,5 @@ Dando un resultado similar, un poco inferior, a buscar en el cluster en un solo 
 
 
 PD: Las pruebas se hicieron en JMeter garantizando la mayor similitud para comprara los diferentes ambientes de una manera justa. Usando portfowarding por ejemplo.
+PD2: Estos tiempos pudieron haber sido afectados por factores como la velocidad a conexión de internet y por eso siempre las peticiones se realizaron desde la misma computadora.
+
