@@ -1,0 +1,49 @@
+=================================================================
+|  Comparativa de tiempos   					|
+|								|
+| Equipo en el que se realizaron las pruebas:			|
+| Procesador:     AMD Ryzen 7 3700X				|
+| Ram:            16 GB						|
+| Almacenamiento: SSD						|
+|    Bajo condiciones similares, consumo mínimo de internet	|
+|    en el equipo. (navegadores, chats off)			|
+=================================================================
+
+SQL Todos
+00:14:50
+
+SQL 3000
+00:02:08
+
+Cluster Todos 100%
+00:05:14
+
+Monolitico Todos
+00:02:26
+
+Monolitico 3000
+00:00:11
+
+Cluster 3000 3_Shards 100%
+00:00:16
+
+Cluster 3000 2_Shards 100%
+00:00:17
+
+Cluster 3000 1_Shards 100%
+00:00:18
+
+---------------------
+
+Cluster Todos 50%
+00:05:14
+
+Cluster 3000 3_Shards 50%
+00:00:33
+
+Cluster 3000 2_Shards 50%
+00:00:22
+
+Cluster 3000 1_Shard 50%
+00:00:17
+

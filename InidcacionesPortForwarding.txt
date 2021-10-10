@@ -1,0 +1,20 @@
+==================================================================
+||	     Configuración del port forwarding windows		||
+==================================================================
+
+-- consultar los port forwarding realizados:
+netsh interface portproxy show all
+
+-- *Port forwarding Mongo Monolítico
+netsh interface portproxy add v4tov4 listenaddress=25.65.150.52 listenport=4000 connectaddress=25.68.23.111 connectport=30000
+
+-- *Port Forwarding SQL Server
+netsh interface portproxy add v4tov4 listenaddress=25.65.150.52 listenport=4001 connectaddress=25.69.53.205 connectport=1433
+
+-- comando para borrar todos los port forwarding
+netsh interface portproxy reset
+
+-- comando solo para borrar uno
+netsh interface portproxy delete v4tov4 listenport=???? listenaddress=IP_address
+
+

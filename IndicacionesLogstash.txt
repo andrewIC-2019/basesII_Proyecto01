@@ -1,0 +1,46 @@
+==================================================================
+||	     	Configuración de Logstash			||
+==================================================================
+
+--------------------------
+ Detalles del docker run
+--------------------------
+
+docker run --rm -it 
+ -v "C:\logstash\pipeline:/usr/share/logstash/pipeline/" 
+ -v "C:\logstash\covid-variants.csv:/usr/share/logstash/covid-variants.csv" 
+ -v "C:\Users\Lenovo\Desktop\BasesDeDatosII\Proyecto1\sqljdbc_9.4\enu\mssql-jdbc-9.4.0.jre8.jar:/usr/share/jdbc/mssql-jdbc-9.4.0.jre8.jar" 
+ 
+ logstash:7.14.1
+ 
+ sh -c "bin/logstash-plugin install --version=3.1.5 logstash-output-mongodb 
+        && bin/logstash-plugin install logstash-output-jdbc
+        && bin/logstash -f /usr/share/logstash/pipeline/proyecto.conf"
+
+
+-- Justificación de volumenes
+
+volumen1: Mapea el archivo de configuración de logstash
+volumen2: Mapea el archivo csv del datamart
+volumen3: Mapea la ubiación del controlador jdbc, utilizado para conectar con sql server
+
+-- Indica la imagen de logstash en su versión 7.14.1
+
+-- Ahora, luego del sh y -c están los comandos que corren dentro del container
+
+comando1: instala el plugin de output de mongodb, en su versión 3.1.5, dado a que la más reciente presenta un error
+comando2: instala el plugin de output de jdbc, este es un plugin desarrollado por terceros, utilza el jdbc para conectar con mssql
+comando3: inicia el logstash, con el archivo indicado por -f (dentro del container, recuerde que ya estaba mapeado)
+
+
+------------------------------
+ Detalles generales del conf
+------------------------------
+
+Input	-> recibe el csv, se le indica la ruta dentro del container
+Filter  -> se le indican las columnas del csv, con mutate se quitan algunos datos que agrega logstash
+Output  -> 
+	    mongo monolitico: "mongodb://25.68.23.111:30000/pandemiadb"   //dirección donde está el monolítico
+	    mongo cluster:    "mongodb://25.65.150.52:27031/pandemiadb"   //dirección de uno de los routers
+	    sql server:	      "/usr/share/jdbc/mssql-jdbc-9.4.0.jre8.jar" //path del jdbc dentro del container
+    			      "jdbc:sqlserver://25.69.53.205:1433;databaseName=pandemiasqldb;user=sa;password=123456" //URI para sql server

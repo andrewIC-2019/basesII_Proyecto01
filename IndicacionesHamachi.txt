@@ -1,0 +1,24 @@
+==================================================================
+||	            Configuración de VPN Hamachi		 ||
+==================================================================
+
+
+Paso #1: Descarga del cliente hamachi https://www.vpn.net/
+
+Paso #2: Registrarse o logIn en una cuenta de LogMeIn
+
+Paso #3: Ingresar a la red del proyecto:
+		ProyectoBases_02
+		Type: Mesh
+		Owner: Manuel
+
+Asignación de Ip:
+
+Juan Pablo: 25.59.169.141
+Fiorella:   25.65.150.52
+Manuel:     25.68.23.111
+Andrés:	    25.65.150.52
+
+
+-- Importante: Dar los permisos pertinentes en el firewall, para permitir la conexión de hamachi
+

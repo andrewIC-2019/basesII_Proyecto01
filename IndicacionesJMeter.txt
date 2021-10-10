@@ -1,0 +1,40 @@
+==================================================================
+||	Instalación y configuración de Apache JMeter		||
+==================================================================
+
+Instalación JMeter
+------------------------
+Descargar de https://jmeter.apache.org/download_jmeter.cgi
+Descomprimir el archivo dentro del directorio de preferiencia, ejemplo: C:\jmeter\
+
+
+Instalación JDBC
+------------------------
+Descargar de https://docs.microsoft.com/en-us/sql/connect/jdbc/download-microsoft-jdbc-driver-for-sql-server?view=sql-server-ver15
+Descomprimir el archivo dentro del directorio de preferiencia, ejemplo: C:\jdbc\
+
+Instalación Driver mongo-java-driver
+-------------------------------------
+Descargar el .jar de: https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver/3.12.10
+Entrar al directorio donde está el jmeter, luego a lib:
+	- Se pega el nuevo mongo-java-driver
+	- Se elimina el mongo-java-driver que venía por defecto
+
+-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°-°
+
+-- Condiciones para el archivo de configuración --
+
+Se espera lo siguiente:
+
+*ruta del jdbc: C:\jdbc\sqljdbc_9.4.0.0_enu\sqljdbc_9.4\enu\mssql-jdbc-9.4.0.jre8.jar
+*archivo de configuracion: sqlserver_test.jmx
+
+Para cambiar aspectos de comunicación (ip y puertos):
+
+- SQL Server: 		Se cambia el url, jdbc:sqlserver://25.65.150.52:4001;databaseName=pandemiasqldb
+			Clase del driver jdbc: com.microsoft.sqlserver.jdbc.SQLServerDriver
+			Usuario: sa
+- Mongo Monolítico: 	mongoHost, mongoPort en "User-Defined-Variables"
+- Mongo Cluster: 	mongoRouterHost, mongoRouterPort en "User-Defined-Variables"
+	
+	* databaseName y databaseCollection, son utilizados por el monolítico y por el cluster
